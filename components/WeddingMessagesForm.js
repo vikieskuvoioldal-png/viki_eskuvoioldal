@@ -37,7 +37,7 @@ export default function WeddingMessagesForm() {
       name,
       email,
       message,
-    });
+    }); 
 
     if (!error) {
       setSubmitted(true);

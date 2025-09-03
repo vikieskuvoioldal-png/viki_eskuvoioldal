@@ -4,13 +4,6 @@ import './globals.css'
 export const metadata = {
   title: 'Anna & Balázs Esküvője',
   description: 'Szeretettel meghívunk az esküvőnkre!',
-  icons: {
-    icon: [
-      { url: '/images/favicon.ico' },
-      // Itt megadhatsz további favicon méreteket, ha vannak
-    ],
-    apple: '/images/apple-touch-icon.png',
-  },
 }
 
 const montserrat = Montserrat({

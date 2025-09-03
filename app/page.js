@@ -8,7 +8,6 @@ import { CalendarCheck, ExternalLink } from "lucide-react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
-// JAVÍTOTT ÚTVONALAK: Az importok most már a helyes helyről mutatnak a komponensekre
 import RsvpForm from '../components/RsvpForm';
 import WeddingHeader from '../components/WeddingHeader';
 import WeddingGifts from '../components/WeddingGifts';
@@ -30,34 +29,39 @@ export default function WeddingWebsite() {
 
   const [isGalleryOpen, setGalleryOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
-
-  // Az ajándéklista logikája ideiglenesen kivéve, mert a ClaimGiftModal és AddGiftModal komponensek hiányoznak
-  // Ha szükséged van rájuk, azokat is létre kell hozni a `components` mappában.
   const [selectedGift, setSelectedGift] = useState(null);
   const [isAddGiftModalOpen, setAddGiftModalOpen] = useState(false);
 
 
   return (
     <main className="min-h-screen bg-white text-gray-800 font-body">
-      <WeddingHeader />
+      {/* A komponensek elrejtéséhez tedd őket kommentbe az alábbiak szerint. */}
+      {/* A komment jelek: {/* ... */}
 
+      {/* <WeddingHeader /> */}
+Üresség
       <div className="pt-24" id="info">
-      <WeddingCountdown />
-        <motion.section
-                    id="rsvp-form"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.6 }}
-                    className="max-w-xl mx-auto px-6 py-20"
-                >
-                    <div className="text-center">
-                        <h3 className="text-3xl font-semibold text-brand-rose mb-4 flex items-center justify-center gap-3"><CalendarCheck/> Kérjük, jelezz vissza! (RSVP)</h3>
-                        <p className="text-gray-600 mb-8">Visszajelzésedet legkésőbb <strong>május 15-ig</strong> várjuk, hogy a szervezést megkönnyítsd számunkra. Köszönjük!</p>
-                    </div>
-                    <RsvpForm />
-        </motion.section>
+      
+      {/* <WeddingCountdown /> */}
 
+      {/*
+        <motion.section
+            id="rsvp-form"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6 }}
+            className="max-w-xl mx-auto px-6 py-20"
+        >
+            <div className="text-center">
+                <h3 className="text-3xl font-semibold text-brand-rose mb-4 flex items-center justify-center gap-3"><CalendarCheck/> Kérjük, jelezz vissza! (RSVP)</h3>
+                <p className="text-gray-600 mb-8">Visszajelzésedet legkésőbb <strong>május 15-ig</strong> várjuk, hogy a szervezést megkönnyítsd számunkra. Köszönjük!</p>
+            </div>
+            <RsvpForm />
+        </motion.section>
+      */}
+
+      {/*
         <motion.section
           id="helyszin"
           initial={{ opacity: 0 }}
@@ -83,7 +87,7 @@ export default function WeddingWebsite() {
                         <p className="text-gray-500">Kapunyitás 17:00-tól</p>
                     </div>
                     <a
-                    href="https://maps.google.com" // Cseréld le a valós Google Maps linkre
+                    href="http://googleusercontent.com/maps.google.com/4"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary-outline text-sm inline-flex items-center gap-2"
@@ -93,7 +97,7 @@ export default function WeddingWebsite() {
                 </div>
                 <div className="h-80 rounded-2xl shadow-xl overflow-hidden">
                 <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.820323389201!2d21.62121231584747!3d47.53198097917961!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47470e0a0f8fb8a9%3A0x1b1f9b0c5b56a42b!2sDebrecen%2C%20Szent%20Anna%20u.%2C%204024!5e0!3m2!1shu!2shu!4v1620313095311!5m2!1shu!2shu" // Cseréld le a valós Google Maps embed linkre
+                    src="http://googleusercontent.com/maps.google.com/5"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -104,10 +108,12 @@ export default function WeddingWebsite() {
                 </div>
             </div>
         </motion.section>
+      */}
 
-        <WeddingMessages/>
-        <WeddingMessagesForm/>
+      {/* <WeddingMessages/> */}
+      {/* <WeddingMessagesForm/> */}
 
+      {/*
         <motion.section
           id="program"
           initial={{ opacity: 0 }}
@@ -126,9 +132,11 @@ export default function WeddingWebsite() {
             <li>22:00 – Tortavágás</li>
           </ul>
         </motion.section>
+      */}
 
-        <WeddingGifts/>
+      {/* <WeddingGifts/> */}
 
+      {/*
         <motion.section
             id="galeria"
             initial={{ opacity: 0 }}
@@ -160,7 +168,9 @@ export default function WeddingWebsite() {
               ))}
             </div>
         </motion.section>
-        
+      */}
+      
+      {/*
         <motion.section
             id="video"
             initial={{ opacity: 0 }}
@@ -186,7 +196,9 @@ export default function WeddingWebsite() {
                 </div>
             </div>
         </motion.section>
+      */}
 
+      {/*
         <Lightbox
             open={isGalleryOpen}
             close={() => setGalleryOpen(false)}
@@ -195,11 +207,14 @@ export default function WeddingWebsite() {
             on={{ view: ({ index }) => setPhotoIndex(index) }}
             styles={{ container: { backgroundColor: "rgba(0, 0, 0, .9)" } }}
         />
+      */}
 
+      {/*
         <footer className="bg-rose-100 text-center py-12 mt-20 text-brand-rose">
           <p className="text-xl font-serif italic">Köszönjük, hogy velünk ünnepelsz!</p>
           <p className="text-sm mt-2">Anna & Balázs esküvője – 2025</p>
         </footer>
+      */}
       </div>
     </main>
   );
