@@ -2,7 +2,7 @@ import { Montserrat } from 'next/font/google'
 import './globals.css'
 
 export const metadata = {
-  title: 'Anna & Balázs Esküvője',
+  title: 'Esküvői oldal',
   description: 'Szeretettel meghívunk az esküvőnkre!',
 }
 
