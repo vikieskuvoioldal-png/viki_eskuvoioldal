@@ -1,233 +1,206 @@
-'use client';
+// app/page.js
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-import FOG from 'vanta/dist/vanta.fog.min.js';
-import * as THREE from 'three';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import { CalendarCheck, ExternalLink } from "lucide-react";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
-import Header from '../components/Header';
-import AboutCard from '../components/About';
-import Collections from '../components/Collections';
-import ContactSection from '../components/Contact';
-import HomePageReviews from '../components/HomePageReviews';
-import HomePageBlog from '../components/HomePageBlog';
-import ScrollToTopButton from "../components/ScrollToTopButton"; 
+// JAVÍTOTT ÚTVONALAK: Az importok most már a helyes helyről mutatnak a komponensekre
+import RsvpForm from '../components/RsvpForm';
+import WeddingHeader from '../components/WeddingHeader';
+import WeddingGifts from '../components/WeddingGifts';
+import WeddingMessages from '../components/WeddingMessages';
+import WeddingMessagesForm from '../components/WeddingMessagesForm';
+import WeddingCountdown from '../components/WeddingCountdown';
 
+export default function WeddingWebsite() {
+    const images = [
+        { src: "/images/wedding1.jpg" },
+        { src: "/images/wedding2.webp" },
+        { src: "/images/wedding3.jpg" },
+        { src: "/images/wedding4.jpg" },
+        { src: "/images/wedding5.jpg" },
+        { src: "/images/wedding6.jpg" },
+        { src: "/images/wedding7.jpg" },
+        { src: "/images/wedding8.jpg" },
+      ];
 
+  const [isGalleryOpen, setGalleryOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(0);
 
-// === FELTURBÓZOTT HERO SZEKCIÓ VANTA.JS HÁTTÉRREL ===
-const HeroSection = () => {
-  const vantaRef = useRef(null);
-  const [vantaEffect, setVantaEffect] = useState(0);
+  // Az ajándéklista logikája ideiglenesen kivéve, mert a ClaimGiftModal és AddGiftModal komponensek hiányoznak
+  // Ha szükséged van rájuk, azokat is létre kell hozni a `components` mappában.
+  const [selectedGift, setSelectedGift] = useState(null);
+  const [isAddGiftModalOpen, setAddGiftModalOpen] = useState(false);
 
-  // Vanta.js effekt inicializálása
-  useEffect(() => {
-    if (!vantaEffect) {
-      setVantaEffect(
-        FOG({
-          el: vantaRef.current,
-          THREE: THREE,
-          mouseControls: true,
-          touchControls: true,
-          gyrocontrols: false,
-          minHeight: 200.0,
-          minWidth: 200.0,
-          highlightColor: 0xffffff,
-          midtoneColor: 0xd9c4c4,
-          lowlightColor: 0xf5ebeb,
-          baseColor: 0xfaf7f6,
-          blurFactor: 0.5,
-          speed: 0.6,
-          zoom: 0.6
-        })
-      );
-    }
-    return () => {
-      if (vantaEffect) vantaEffect.destroy();
-    };
-  }, [vantaEffect]);
-  
-  // Parallaxis effekt görgetéskor
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ['start start', 'end start'],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section ref={targetRef} className="relative h-screen overflow-hidden">
-      {/* 1. Vanta.js animált háttér */}
-      <div ref={vantaRef} className="absolute inset-0 z-0" />
-      
-      {/* 2. Header komponens a háttér felett */}
-      <div className="absolute top-0 left-0 w-full z-20">
-        <Header />
-      </div>
+    <main className="min-h-screen bg-white text-gray-800 font-body">
+      <WeddingHeader />
 
-      {/* 3. Központi tartalom parallaxis effekttel */}
-      <motion.div 
-        style={{ y, opacity }}
-        className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4"
-      >
-        <motion.h1 
-          className="text-6xl md:text-[9rem] font-playfair tracking-wide flex justify-center gap-2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
+      <div className="pt-24" id="info">
+      <WeddingCountdown />
+        <motion.section
+                    id="rsvp-form"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6 }}
+                    className="max-w-xl mx-auto px-6 py-20"
+                >
+                    <div className="text-center">
+                        <h3 className="text-3xl font-semibold text-brand-rose mb-4 flex items-center justify-center gap-3"><CalendarCheck/> Kérjük, jelezz vissza! (RSVP)</h3>
+                        <p className="text-gray-600 mb-8">Visszajelzésedet legkésőbb <strong>május 15-ig</strong> várjuk, hogy a szervezést megkönnyítsd számunkra. Köszönjük!</p>
+                    </div>
+                    <RsvpForm />
+        </motion.section>
+
+        <motion.section
+          id="helyszin"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="max-w-4xl mx-auto px-6 py-16"
         >
-          <span className="bg-gradient-to-r from-[#f1cdd6] via-[#d68fa1] to-[#a65c6d] text-transparent bg-clip-text">L</span>
-          <span className="bg-gradient-to-r from-[#f1cdd6] via-[#d68fa1] to-[#a65c6d] text-transparent bg-clip-text">A</span>
-          <span className="bg-gradient-to-r from-[#f1cdd6] via-[#d68fa1] to-[#a65c6d] text-transparent bg-clip-text">C</span>
-          <span className="bg-gradient-to-r from-[#f1cdd6] via-[#d68fa1] to-[#a65c6d] text-transparent bg-clip-text">E</span>
-        </motion.h1>
-        <motion.p 
-          className="font-dancing text-3xl italic text-black text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
+            <div className="text-center">
+                <h3 className="text-3xl font-semibold text-brand-rose mb-2">Helyszínek</h3>
+                <p className="text-gray-600 mb-10">Szeretettel várunk Titeket a nagy napunkon az alábbi helyszíneken!</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div className="space-y-6">
+                    <div>
+                        <h4 className="font-serif text-2xl text-brand-text flex items-center gap-2">Ceremónia</h4>
+                        <p className="text-gray-700 mt-2">Szent Anna Templom, Debrecen</p>
+                        <p className="text-gray-500">2026. Június 10. – 15:00</p>
+                    </div>
+                    <div>
+                        <h4 className="font-serif text-2xl text-brand-text flex items-center gap-2">Vacsora & Buli</h4>
+                        <p className="text-gray-700 mt-2">Liszkay Pincészet, Monoszló</p>
+                        <p className="text-gray-500">Kapunyitás 17:00-tól</p>
+                    </div>
+                    <a
+                    href="https://maps.google.com" // Cseréld le a valós Google Maps linkre
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary-outline text-sm inline-flex items-center gap-2"
+                    >
+                    Útvonaltervezés <ExternalLink size={14} />
+                    </a>
+                </div>
+                <div className="h-80 rounded-2xl shadow-xl overflow-hidden">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.820323389201!2d21.62121231584747!3d47.53198097917961!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47470e0a0f8fb8a9%3A0x1b1f9b0c5b56a42b!2sDebrecen%2C%20Szent%20Anna%20u.%2C%204024!5e0!3m2!1shu!2shu!4v1620313095311!5m2!1shu!2shu" // Cseréld le a valós Google Maps embed linkre
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+                </div>
+            </div>
+        </motion.section>
+
+        <WeddingMessages/>
+        <WeddingMessagesForm/>
+
+        <motion.section
+          id="program"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="max-w-3xl mx-auto px-6 py-16"
         >
-          A te történeted.
-        </motion.p>
-        <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.6, type: "spring" }}
-            className="mt-8"
-        >
-            <Link href={`/kollekciok`} legacyBehavior>
-                {/* JAVÍTVA: Az új, egységes 'btn-primary' osztály használata */}
-                <a className="btn-primary mt-32">
-                    Kollekciók megtekintése
-                </a>
-            </Link>
-        </motion.div>
-      </motion.div>
+          <h3 className="text-3xl font-semibold text-brand-rose mb-6 text-center">Esküvői Program</h3>
+          <ul className="space-y-4 text-gray-700">
+            <li>15:00 – Szertartás</li>
+            <li>16:00 – Közös fotózás</li>
+            <li>17:00 – Vacsora és beszédek</li>
+            <li>19:00 – Nyitótánc</li>
+            <li>20:00 – Élő zene és buli</li>
+            <li>22:00 – Tortavágás</li>
+          </ul>
+        </motion.section>
 
+        <WeddingGifts/>
 
-
-      
-      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-white to-transparent z-5" />
-    </section>
-  );
-};
-
-
-// --- Főoldal Komponens ---
-export default function HomePage() {
-  return (
-    <>
-      <HeroSection />
-
-      <section className="py-16 md:py-24 bg-white">
-        <DividerWithTitle title="A LACE története" />
-      </section>
-      <AboutCard />
-
-      <section id="kollekcios" className="py-16 md:py-24 bg-white">
-        <DividerWithTitle title="Kollekciók" link="/kollekciok" />
-      </section>
-      <Collections />
-
-      <section className="py-16 md:py-24 bg-white">
-        <DividerWithTitle title="Vélemények" link="/velemenyek" />
-      </section>
-      <HomePageReviews />
-
-      <section className="py-16 md:py-24 bg-white">
-        <DividerWithTitle title="Blogok" link="/blog" />
-      </section>
-      <HomePageBlog />
-
-      <ContactSection />
-      <ScrollToTopButton />
-    </>
-  );
-}
-
-// === FELTURBÓZOTT DividerWithTitle és ShimmerLine ===
-
-function DividerWithTitle({ title, link }) {
-  const TitleTag = title === "Kollekciók" ? "h3" : "h2";
-  const textClasses =
-    title === "Kollekciók"
-      ? "font-playfair text-3xl md:text-4xl italic text-gray-700 whitespace-nowrap"
-      : "font-playfair text-3xl md:text-4xl italic text-gray-700 whitespace-nowrap";
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-        delayChildren: 0.5,
-      },
-    },
-  };
-
-  const letterVariants = {
-    hidden: { y: 0, color: "#5C5454" }, // brand-text
-    visible: {
-      y: [0, -8, 0],
-      color: ["#5C5454", "#B76E79", "#5C5454"], // brand-text -> brand-rose-gold -> brand-text
-      transition: {
-        duration: 0.8,
-        ease: "easeInOut",
-      },
-    },
-  };
-
-  const letters = Array.from(title);
-
-  return (
-    <div className="flex items-center justify-center gap-6 px-4 relative">
-      <ShimmerLine direction="right" />
-      
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.6 }}
-        variants={containerVariants}
-      >
-        {link ? (
-          <Link href={link} className="hover:text-brand-rose transition-colors">
-            <TitleTag className={textClasses} aria-label={title}>
-              {letters.map((letter, index) => (
-                <motion.span key={index} variants={letterVariants} className="inline-block">
-                  {letter === " " ? "\u00A0" : letter}
-                </motion.span>
+        <motion.section
+            id="galeria"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="max-w-6xl mx-auto px-6 py-16"
+          >
+            <h3 className="text-3xl font-semibold text-brand-rose mb-8 text-center">Galéria</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              {images.map((img, index) => (
+                <motion.div
+                  key={index}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer aspect-w-4 aspect-h-3"
+                  onClick={() => {
+                    setPhotoIndex(index);
+                    setGalleryOpen(true);
+                  }}
+                >
+                  <Image
+                    src={img.src}
+                    alt={`Esküvői fotó ${index + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="transition-transform duration-500"
+                  />
+                </motion.div>
               ))}
-            </TitleTag>
-          </Link>
-        ) : (
-          <TitleTag className={textClasses} aria-label={title}>
-            {letters.map((letter, index) => (
-              <motion.span key={index} variants={letterVariants} className="inline-block">
-                {letter === " " ? "\u00A0" : letter}
-              </motion.span>
-            ))}
-          </TitleTag>
-        )}
-      </motion.div>
+            </div>
+        </motion.section>
+        
+        <motion.section
+            id="video"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="py-20 bg-gradient-to-b from-rose-50 to-white"
+        >
+            <div className="max-w-4xl mx-auto px-6 text-center">
+                <h3 className="text-3xl font-semibold text-brand-rose mb-4">A Mi Történetünk</h3>
+                <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+                    Egy rövid film a közös pillanatainkról, amit szeretettel készítettünk Nektek.
+                </p>
+                <div className="w-full max-w-3xl mx-auto aspect-video rounded-2xl shadow-xl overflow-hidden">
+                    <video
+                        src="/videos/video.mp4"
+                        controls
+                        poster="/images/wedding3.jpg"
+                        className="w-full h-full object-cover"
+                    >
+                        A böngésződ nem támogatja a videó lejátszást.
+                    </video>
+                </div>
+            </div>
+        </motion.section>
 
-      <ShimmerLine direction="left" />
-    </div>
-  );
-}
+        <Lightbox
+            open={isGalleryOpen}
+            close={() => setGalleryOpen(false)}
+            slides={images}
+            index={photoIndex}
+            on={{ view: ({ index }) => setPhotoIndex(index) }}
+            styles={{ container: { backgroundColor: "rgba(0, 0, 0, .9)" } }}
+        />
 
-function ShimmerLine({ direction = "right" }) {
-  return (
-    <motion.div
-      className="relative h-[2px] flex-1 max-w-[400px] bg-gradient-to-r from-brand-pale-pink via-brand-rose to-brand-pale-pink"
-      initial={{ scaleX: 0, opacity: 0 }}
-      whileInView={{ scaleX: 1, opacity: 1 }}
-      viewport={{ once: true, amount: 0.5 }}
-      transition={{ duration: 1.2, ease: "easeInOut" }}
-      style={{ transformOrigin: direction }}
-    />
+        <footer className="bg-rose-100 text-center py-12 mt-20 text-brand-rose">
+          <p className="text-xl font-serif italic">Köszönjük, hogy velünk ünnepelsz!</p>
+          <p className="text-sm mt-2">Anna & Balázs esküvője – 2025</p>
+        </footer>
+      </div>
+    </main>
   );
 }
