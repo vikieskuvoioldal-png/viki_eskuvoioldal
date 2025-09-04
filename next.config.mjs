@@ -1,7 +1,17 @@
+// next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['res.cloudinary.com', 'bjjjpntdcydixfgurtus.supabase.co'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com', // Ezt meghagyhatjuk, ha esetleg használnád
+      },
+      {
+        protocol: 'https',
+        hostname: 'ortpmfnrnxsmszvslxpf.supabase.co', 
+      },
+    ],
   },
 };
 
